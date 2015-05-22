@@ -33,9 +33,6 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 #- Use Capistrano for deployment
 #- gem 'capistrano-rails', group: :development
 
-#- Use bootstrap SASS to allow compilation of 'css.scss' files down to '.css'
-gem 'bootstrap-sass', '~> 3.1.1'
-
 group :development, :test do
   #- Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
@@ -71,3 +68,6 @@ group :production do
   gem 'rails_12factor'
   #% Project group additions: (none)
 end
+
+#- Use bootstrap SASS to allow compilation of 'css.scss' files down to '.css'
+gem 'bootstrap-sass', '~> 3.1.1'
