@@ -65,10 +65,9 @@ group :test, :development do
 end
 
 group :production do
-  #% Project group additions:
-  require 'yaml'
   #- Present on initialization:
   gem 'pg'
   gem 'google-analytics-rails'
   gem 'rails_12factor'
+  #% Project group additions:
 end
