@@ -4,7 +4,7 @@ class CreateSmells < ActiveRecord::Migration
       t.string :content
       t.float :lat
       t.float :lng
-      t.integer :user_id
+      t.belongs_to :user
 
       t.timestamps null: false
     end
