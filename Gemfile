@@ -6,6 +6,9 @@ source 'https://rubygems.org'
 #% Specify Ruby version for remote
 ruby '2.2.0'
 
+#% Use JSON gem
+gem 'json'
+
 #- Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'
 #- Use SCSS for stylesheets

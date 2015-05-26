@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :smells, only: [:index, :create]
   resources :users, only: [:index, :create]
 
+  get 'smells/last' => 'smells#last'
   get 'enable_location' => 'application#enable_location'
   root 'smells#index'
 

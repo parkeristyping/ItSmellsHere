@@ -1,6 +1,17 @@
 class SmellsController < ApplicationController
   def index
     @smells = Smell.all
+    respond_to do |format|
+      format.html
+      format.json {render json: @smells.reverse}
+    end
+  end
+
+  def last
+    @smell = Smell.last
+    respond_to do |format|
+      format.json {render json: @smell}
+    end
   end
 
   def create
