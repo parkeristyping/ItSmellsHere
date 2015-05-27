@@ -19,6 +19,8 @@ class SmellsController < ApplicationController
     @smell = Smell.create(smell_params[:smell])
     @user.smells << @smell
     @user.save
+    new_smell = { lat: @smell.lat, lng: @smell.lng}
+    WebsocketRails[:smells].trigger(:new, new_smell)
   end
 
   private
