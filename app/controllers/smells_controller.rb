@@ -15,16 +15,29 @@ class SmellsController < ApplicationController
   end
 
   def create
-    @user = User.find_or_create_by(smell_params[:user])
-    @smell = Smell.create(smell_params[:smell])
+    @user = User.find_or_create_by(user_params[:user])
+    @smell = Smell.create(smell_params)
     @user.smells << @smell
     @user.save
-    new_smell = { lat: @smell.lat, lng: @smell.lng}
+    new_smell = {
+                 content: @smell.content,
+                 lat: @smell.lat,
+                 lng: @smell.lng,
+                 user: {
+                   twitter_id: @smell.user.twitter_id,
+                   twitter_handle: @smell.user.twitter_handle,
+                   name: @smell.user.name
+                 }
+                }
     WebsocketRails[:smells].trigger(:new, new_smell)
   end
 
   private
   def smell_params
-    params.require(:smell).permit(smell: [:content, :lat, :lng], user: [:twitter_id, :twitter_handle, :name])
+    params.require(:smell).permit(:content, :lat, :lng)
+  end
+
+  def user_params
+    params.require(:smell).permit(user: [:twitter_id, :twitter_handle, :name])
   end
 end
