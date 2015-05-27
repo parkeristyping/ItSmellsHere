@@ -19,30 +19,3 @@
 //= depend_on_asset "bootstrap/glyphicons-halflings-regular.svg"
 */
 @import "bootstrap";
-/* Some Style from the Bootstrap Default Theme */
-/* body {
-padding-top: 70px;
-padding-bottom: 30px;
-}
-
-.theme-dropdown .dropdown-menu {
-position: static;
-display: block;
-margin-bottom: 20px;
-}
-
-.theme-showcase > p > .btn {
-margin: 5px 0;
-}*/
-
-/* Make map fullscreen */
-html, body,
-#map-canvas {
-  /*height: 100%;*/
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 1;
-}
