@@ -46,6 +46,26 @@
          });
      }
 
+     function addSideBarElement(smell) {
+        var $sideBarElementHeader = $('<div>', {
+            class: "panel panel-default"
+        }).append($('<div>', {
+            class: "panel-heading"
+        }).text(smell.content));
+        
+        var $sideBarElementFooter = $('<p>',{text: " tweeted this just now"}).prepend($('<a>',{text: smell.user.twitter_handle, href:"https://twitter.com/" + smell.user.twitter_handle}));
+
+        var $sideBarWrapper = $('<div>', {
+          class: "smell"
+        });
+
+        $sideBarWrapper.append($sideBarElementHeader);
+        $sideBarWrapper.append($sideBarElementFooter);
+        $sideBarWrapper.append("<hr>");
+
+        $('#left').prepend($sideBarWrapper);
+    }
+
      // Initialize map
      getLocation();
 
@@ -55,6 +75,8 @@
      channel.bind('new', function(smell) {
          // Add marker when smell added to database
          addMarker(smell);
+         // Add sideBarElement
+         addSideBarElement(smell);
      });
- });
+  });
 </script>
