@@ -90,7 +90,7 @@
      getLocation();
 
      // Connect to websocket
-     var dispatcher = new WebSocketRails('localhost:3000/websocket');
+     var dispatcher = new WebSocketRails('www.itsmellshere.com/websocket');
      var channel = dispatcher.subscribe('smells');
      channel.bind('new', function(smell) {
          // Add marker when smell added to database
