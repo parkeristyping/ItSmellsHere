@@ -78,20 +78,24 @@
      }
 
      function addSideBarElement(smell) {
-         var $sideBarElementHeader = $('<div>', {
+         var $sideBar = $('<div>', {
              class: "panel panel-default"
-         }).append($('<div>', {
+         });
+
+         var $sideBarElementHeader = $('<div>', {
              class: "panel-heading"
          }).append($('<p>',{
              text: " tweeted this just now"
          }).prepend($('<a>',{
              text: smell.user.twitter_handle,
              href:"https://twitter.com/" + smell.user.twitter_handle
-         }))));
+         })));
 
          var $sideBarElementBody = $('<div>',{
              class: 'panel-body'
          }).text(smell.content);
+
+         $sideBar.append($sideBarElementHeader, $sideBarElementBody);
 
          var $sideBarWrapper = $('<div>', {
              class: "smell"
@@ -100,9 +104,7 @@
          $sideBarWrapper.attr("data-lat",smell.lat);
          $sideBarWrapper.attr("data-lng",smell.lng);
          $sideBarWrapper.attr("data-smell-id",smell.id);
-         $sideBarWrapper.append($sideBarElementHeader);
-         $sideBarWrapper.append($sideBarElementFooter);
-         $sideBarWrapper.append("<hr>");
+         $sideBarWrapper.append($sideBar);
 
          $('#left').prepend($sideBarWrapper);
      }
