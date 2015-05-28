@@ -1,18 +1,20 @@
-<div class="smell">
+<div class="smell" data-lat="<%= smell.lat %>" data-lng="<%= smell.lng %>">
   <div class="panel panel-default">
     <div class="panel-heading"><%= smell.content %>
     </div>
   </div>
   <% time_ago = Time.now - smell.created_at %>
-  <% if time_ago < 60
-   time_message = " just now"
- elsif time_ago < 60 * 60
-   time_message = " #{(time_ago/60).to_i} minutes ago"
- elsif time_ago < 60 * 60 * 24
-   time_message = " #{(time_ago/(60 * 60)).to_i} hours ago"
- else
-   time_message = " #{(time_ago/(60 * 60 * 24)).to_i} days ago"
-   end %>
+   <%
+     if time_ago < 60
+       time_message = " just now"
+     elsif time_ago < 60 * 60
+       time_message = " #{(time_ago/60).to_i} minutes ago"
+     elsif time_ago < 60 * 60 * 24
+       time_message = " #{(time_ago/(60 * 60)).to_i} hours ago"
+     else
+       time_message = " #{(time_ago/(60 * 60 * 24)).to_i} days ago"
+     end
+   %>
    <a href="https://twitter.com/<%= smell.user.twitter_handle %>"><%= smell.user.twitter_handle %></a><%= " tweeted this " + time_message %>
    <hr>
 </div>

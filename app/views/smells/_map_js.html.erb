@@ -37,6 +37,23 @@
                  map: map
              });
          };
+         google.maps.event.addListener(map, 'bounds_changed', function() {
+             // Get bounds
+             var bounds = this.getBounds();
+             // Add/remove elements as necessary
+             $('.smell').each(function(){
+                 var lat = this.getAttribute('data-lat');
+                 var lng = this.getAttribute('data-lng');
+                 checkBounds(bounds);
+                 if (lat > bounds.Da.A && lat < bounds.Da.j && lng > bounds.va.j && lng < bounds.va.A) {
+                    $(this).show();
+                 } else {
+                    $(this).hide();
+                 };
+             });
+             function checkBounds(bounds){
+             }
+         });
      };
 
      function addMarker(smell) {
@@ -47,30 +64,37 @@
      }
 
      function addSideBarElement(smell) {
-        var $sideBarElementHeader = $('<div>', {
-            class: "panel panel-default"
-        }).append($('<div>', {
-            class: "panel-heading"
-        }).text(smell.content));
+         var $sideBarElementHeader = $('<div>', {
+             class: "panel panel-default"
+         }).append($('<div>', {
+             class: "panel-heading"
+         }).text(smell.content));
 
-        var $sideBarElementFooter = $('<p>',{text: " tweeted this just now"}).prepend($('<a>',{text: smell.user.twitter_handle, href:"https://twitter.com/" + smell.user.twitter_handle}));
+         var $sideBarElementFooter = $('<p>',{text: " tweeted this just now"}).prepend($('<a>',{text: smell.user.twitter_handle, href:"https://twitter.com/" + smell.user.twitter_handle}));
 
-        var $sideBarWrapper = $('<div>', {
-          class: "smell"
-        });
+         var $sideBarWrapper = $('<div>', {
+             class: "smell"
+         });
 
-        $sideBarWrapper.append($sideBarElementHeader);
-        $sideBarWrapper.append($sideBarElementFooter);
-        $sideBarWrapper.append("<hr>");
+         $sideBarWrapper.attr("data-lat",smell.lat);
+         $sideBarWrapper.attr("data-lng",smell.lng);
+         $sideBarWrapper.append($sideBarElementHeader);
+         $sideBarWrapper.append($sideBarElementFooter);
+         $sideBarWrapper.append("<hr>");
 
-        $('#left').prepend($sideBarWrapper);
-    }
+         $('#left').prepend($sideBarWrapper);
+     }
+
+     // Bind resize event to Google Map on window resize
+     $(window).resize(function() {
+         google.maps.event.trigger(map, "resize");
+     });
 
      // Initialize map
      getLocation();
 
      // Connect to websocket
-     var dispatcher = new WebSocketRails('www.itsmellshere.com/websocket');
+     var dispatcher = new WebSocketRails('localhost:3000/websocket');
      var channel = dispatcher.subscribe('smells');
      channel.bind('new', function(smell) {
          // Add marker when smell added to database
@@ -78,5 +102,5 @@
          // Add sideBarElement
          addSideBarElement(smell);
      });
-  });
+ });
 </script>
