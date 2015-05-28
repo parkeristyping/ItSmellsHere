@@ -99,26 +99,8 @@
          addSideBarElement(smell);
      });
 
-     function getLocationForTweet(myWindow) {
-         if (navigator.geolocation) {
-             navigator.geolocation.getCurrentPosition(parsePositionForTweet.bind(myWindow));
-         }
-         // TODO: Add fall-back if user doesn't give location
-     }
-
-     // define callback for getCurrentPosition function of getLocation()
-     function parsePositionForTweet(position) {
-       var latitude = position.coords.latitude;
-       var longitude = position.coords.longitude;
-       // create and open link with user's current location
-       var link = "https://twitter.com/intent/tweet?text=%40itsmellshere%20It%20smells%20at%20Lat%3A" + Math.round(latitude * 10000) / 10000 + "%2C%20Lng%3A" + Math.round(longitude * 10000) / 10000;
-       this.location.href = link;
-     }
-
      $('#add-new-smell').on('click', function() {
-        var myWindow = window.open();
-        getLocationForTweet(myWindow);
+         window.open("/tweet_link");
      });
-
  });
 </script>

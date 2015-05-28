@@ -7,4 +7,8 @@ class ApplicationController < ActionController::Base
     redirect_to 'https://support.twitter.com/articles/122236-adding-your-location-to-a-tweet'
   end
 
+  def tweet_link
+    render partial: "tweet_link"
+  end
+
 end

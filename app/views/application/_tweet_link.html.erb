@@ -1,0 +1,24 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</head>
+<h1>Getting your location...</h1>
+<script>
+ $(document).ready(function(){
+     function getLocationForTweet() {
+         if (navigator.geolocation) {
+             navigator.geolocation.getCurrentPosition(parsePositionForTweet);
+         }
+         // TODO: Add fall-back if user doesn't give location
+     }
+
+     // define callback for getCurrentPosition function of getLocation()
+     function parsePositionForTweet(position) {
+         var latitude = position.coords.latitude;
+         var longitude = position.coords.longitude;
+         // create and open link with user's current location
+         var link = "https://twitter.com/intent/tweet?text=%40itsmellshere%20It%20smells%20at%20Lat%3A" + Math.round(latitude * 10000) / 10000 + "%2C%20Lng%3A" + Math.round(longitude * 10000) / 10000;
+         window.location.href = link;
+     }
+     getLocationForTweet();
+ });
+</script>
