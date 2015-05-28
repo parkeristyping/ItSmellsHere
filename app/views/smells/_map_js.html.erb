@@ -39,11 +39,13 @@
                  smell_id: locations[i][2]
              });
              google.maps.event.addListener(marker, 'click', function() {
-               var smell_id = this.smell_id;
-               var selector = '[data-smell-id="' + smell_id + '"]';
-              $('#left').animate({
-                scrollTop: $(selector).offset().top
-              }, 2000);
+                 var smell_id = this.smell_id;
+                 var selector = '[data-smell-id="' + smell_id + '"]';
+                 $('.row').animate({
+                     scrollTop: $(selector).offset().top - $('#left').offset().top + $('#left').scrollTop() - 200
+                 });
+                 $('.panel-primary').toggleClass('panel-primary', 'panel-default');
+                 $(selector + ' .panel').toggleClass('panel-primary', 'panel-default');
              });
          };
          google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -53,9 +55,9 @@
              $('.smell').each(function(){
                  var smellLatLng = new google.maps.LatLng(this.getAttribute('data-lat'), this.getAttribute('data-lng'));
                  if (bounds.contains(smellLatLng)) {
-                    $(this).show();
+                     $(this).show();
                  } else {
-                    $(this).hide();
+                     $(this).hide();
                  };
              });
          });
@@ -68,10 +70,10 @@
              smell_id: smell.id
          });
          google.maps.event.addListener(marker, 'click', function() {
-           var smell_id = this.smell_id;
-           var selector = '[data-smell-id="' + smell_id + '"]';
-          //  $(selector)
-           debugger;
+             var smell_id = this.smell_id;
+             var selector = '[data-smell-id="' + smell_id + '"]';
+             //  $(selector)
+             debugger;
          });
      }
 
