@@ -42,10 +42,9 @@
              var bounds = this.getBounds();
              // Add/remove elements as necessary
              $('.smell').each(function(){
-                 var lat = this.getAttribute('data-lat');
-                 var lng = this.getAttribute('data-lng');
+                 var smellLatLng = new google.maps.LatLng(this.getAttribute('data-lat'), this.getAttribute('data-lng'));
                  checkBounds(bounds);
-                 if (lat > bounds.Da.A && lat < bounds.Da.j && lng > bounds.va.j && lng < bounds.va.A) {
+                 if (bounds.contains(smellLatLng)) {
                     $(this).show();
                  } else {
                     $(this).hide();
