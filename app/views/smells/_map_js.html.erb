@@ -27,14 +27,23 @@
          }
          map = new google.maps.Map(mapCanvas, mapOptions);
          <% myArray = smells.map do |smell| %>
-         <% [smell.lat, smell.lng] %>
+         <% [smell.lat, smell.lng, smell.id] %>
          <% end %>
          var locations = <%= myArray %>;
+         // locations = [[0.00000, 0.00000, 1], [0.00000, 0.00000, 2]]
          var marker, i;
          for (i = 0; i < locations.length; i++) {
              marker = new google.maps.Marker({
                  position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-                 map: map
+                 map: map,
+                 smell_id: locations[i][2]
+             });
+             google.maps.event.addListener(marker, 'click', function() {
+               var smell_id = this.smell_id;
+               var selector = '[data-smell-id="' + smell_id + '"]';
+              $('#left').animate({
+                scrollTop: $(selector).offset().top
+              }, 2000);
              });
          };
          google.maps.event.addListener(map, 'bounds_changed', function() {
@@ -55,7 +64,14 @@
      function addMarker(smell) {
          marker = new google.maps.Marker({
              position: new google.maps.LatLng(smell.lat, smell.lng),
-             map: map
+             map: map,
+             smell_id: smell.id
+         });
+         google.maps.event.addListener(marker, 'click', function() {
+           var smell_id = this.smell_id;
+           var selector = '[data-smell-id="' + smell_id + '"]';
+          //  $(selector)
+           debugger;
          });
      }
 
@@ -74,6 +90,7 @@
 
          $sideBarWrapper.attr("data-lat",smell.lat);
          $sideBarWrapper.attr("data-lng",smell.lng);
+         $sideBarWrapper.attr("data-smell-id",smell.id);
          $sideBarWrapper.append($sideBarElementHeader);
          $sideBarWrapper.append($sideBarElementFooter);
          $sideBarWrapper.append("<hr>");

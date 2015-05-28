@@ -20,6 +20,7 @@ class SmellsController < ApplicationController
     @user.smells << @smell
     @user.save
     new_smell = {
+                 id: @smell.id,
                  content: @smell.content,
                  lat: @smell.lat,
                  lng: @smell.lng,
