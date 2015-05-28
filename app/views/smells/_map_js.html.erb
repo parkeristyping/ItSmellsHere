@@ -43,15 +43,12 @@
              // Add/remove elements as necessary
              $('.smell').each(function(){
                  var smellLatLng = new google.maps.LatLng(this.getAttribute('data-lat'), this.getAttribute('data-lng'));
-                 checkBounds(bounds);
                  if (bounds.contains(smellLatLng)) {
                     $(this).show();
                  } else {
                     $(this).hide();
                  };
              });
-             function checkBounds(bounds){
-             }
          });
      };
 
