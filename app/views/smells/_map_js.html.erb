@@ -82,9 +82,16 @@
              class: "panel panel-default"
          }).append($('<div>', {
              class: "panel-heading"
-         }).text(smell.content));
+         }).append($('<p>',{
+             text: " tweeted this just now"
+         }).prepend($('<a>',{
+             text: smell.user.twitter_handle,
+             href:"https://twitter.com/" + smell.user.twitter_handle
+         }))));
 
-         var $sideBarElementFooter = $('<p>',{text: " tweeted this just now"}).prepend($('<a>',{text: smell.user.twitter_handle, href:"https://twitter.com/" + smell.user.twitter_handle}));
+         var $sideBarElementBody = $('<div>',{
+             class: 'panel-body'
+         }).text(smell.content);
 
          var $sideBarWrapper = $('<div>', {
              class: "smell"
