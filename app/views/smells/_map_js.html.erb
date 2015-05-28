@@ -84,12 +84,11 @@
 
          var $sideBarElementHeader = $('<div>', {
              class: "panel-heading"
-         }).append($('<p>',{
-             text: " tweeted this just now"
-         }).prepend($('<a>',{
-             text: smell.user.twitter_handle,
+         }).append($('<a>',{
+             text: "@" + smell.user.twitter_handle,
              href:"https://twitter.com/" + smell.user.twitter_handle
-         })));
+         }));
+         $sideBarElementHeader.append(" reported a smell just now");
 
          var $sideBarElementBody = $('<div>',{
              class: 'panel-body'
