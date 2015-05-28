@@ -27,7 +27,7 @@
 
 
       <!-- item list -->
-      <%= render @smells %>
+      <%= render @smells.order(created_at: :desc) %>
 
       <p id="creators">Created By: Parker Lawrence, Evan Schrager, Ian Valentine</p>
 
