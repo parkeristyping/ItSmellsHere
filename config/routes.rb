@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'tweet_link' => 'application#tweet_link'
   get 'smells/last' => 'smells#last'
   get 'enable_location' => 'application#enable_location'
+  get 'about' => 'application#about'
   root 'smells#index'
 
   # The priority is based upon order of creation: first created -> highest priority.

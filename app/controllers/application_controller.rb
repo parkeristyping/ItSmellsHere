@@ -11,4 +11,7 @@ class ApplicationController < ActionController::Base
     render partial: "tweet_link"
   end
 
+  def about
+  end
+
 end

@@ -19,3 +19,23 @@
 //= depend_on_asset "bootstrap/glyphicons-halflings-regular.svg"
 */
 @import "bootstrap";
+
+.navbar {
+   box-shadow: 0 0 15px 0 black;
+}
+
+#about-panel {
+  padding: 10px;
+}
+
+#directions-panel {
+  padding: 10px;
+}
+
+#about-panel h2 {
+  color: rgb(15,118,195);
+}
+
+#directions-panel h2 {
+  color: rgb(15,118,195);
+}
