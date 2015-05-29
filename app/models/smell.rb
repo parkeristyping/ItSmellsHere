@@ -14,7 +14,7 @@ class Smell < ActiveRecord::Base
     elsif time_ago < 60 * 60 * 24 * 2
       " yesterday"
     else
-      " #{(@time_ago/(60 * 60 * 24)).to_i} days ago"
+      " #{(time_ago/(60 * 60 * 24)).to_i} days ago"
     end
   end
 
