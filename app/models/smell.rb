@@ -18,4 +18,8 @@ class Smell < ActiveRecord::Base
     end
   end
 
+  def linkable_content
+    self.content.gsub(/@(\w+)/, '<a href="http://twitter.com/\1">@\1</a>')
+  end
+
 end

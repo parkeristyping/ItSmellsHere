@@ -2,7 +2,7 @@
     <div class="panel panel-default">
         <div class="panel-heading"><a href="https://twitter.com/<%= smell.user.twitter_handle %>"><%= "@" + smell.user.twitter_handle %></a><%= " reported a smell " + smell.time_ago %></div>
         <div class="panel-body">
-            <%= smell.content %>
+            <%= smell.linkable_content.html_safe %>
         </div>
     </div>
 </div>
