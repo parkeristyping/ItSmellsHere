@@ -1,10 +1,7 @@
 class SmellsController < ApplicationController
   def index
     @smells = Smell.all
-    respond_to do |format|
-      format.html
-      format.json {render json: @smells.reverse}
-    end
+    @smells_json = Smell.jsonify
   end
 
   def last
@@ -19,6 +16,7 @@ class SmellsController < ApplicationController
     @smell = Smell.create(smell_params)
     @user.smells << @smell
     @user.save
+    sidebar = render partial: 'smell', locals: {smell: @smell}
     new_smell = {
                  id: @smell.id,
                  content: @smell.content,
@@ -28,7 +26,8 @@ class SmellsController < ApplicationController
                    twitter_id: @smell.user.twitter_id,
                    twitter_handle: @smell.user.twitter_handle,
                    name: @smell.user.name
-                 }
+                 },
+                 sidebar: sidebar
                 }
     WebsocketRails[:smells].trigger(:new, new_smell)
   end

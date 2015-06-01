@@ -14,12 +14,22 @@ class Smell < ActiveRecord::Base
     elsif time_ago < 60 * 60 * 24 * 2
       " yesterday"
     else
-      " #{(@time_ago/(60 * 60 * 24)).to_i} days ago"
+      " #{(time_ago/(60 * 60 * 24)).to_i} days ago"
     end
   end
 
   def linkable_content
     self.content.gsub(/@(\w+)/, '<a href="http://twitter.com/\1">@\1</a>')
+  end
+
+  def self.jsonify
+    self.all.map do |smell|
+      {
+        id: smell.id,
+        lat: smell.lat,
+        lng: smell.lng
+      }
+    end.to_json
   end
 
 end

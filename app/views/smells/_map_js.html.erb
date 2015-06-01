@@ -2,6 +2,31 @@
  // Load on page ready...
  $(document).ready(function(){
      var map;
+     var addClickListener = addClickListenerConstructor();
+
+     function addClickListenerConstructor() {
+         var activeMarker;
+         return function(marker){
+             google.maps.event.addListener(marker, 'click', function() {
+                 // First, deselect last element selected
+                 $('.panel-primary').toggleClass('panel-primary', 'panel-default');
+                 if (activeMarker) {
+                     activeMarker.setIcon(grey);
+                 };
+
+                 // Then, update this marker
+                 var smell_id = this.smell_id;
+                 var selector = '[data-smell-id="' + smell_id + '"]';
+                 $('.row').animate({
+                     scrollTop: $(selector).offset().top - $('#left').offset().top + $('#left').scrollTop() - 200
+                 });
+                 $(selector + ' .panel').toggleClass('panel-primary', 'panel-default');
+                 this.setIcon(blue);
+                 activeMarker = this;
+             });
+         };
+     }
+
      // define function to get user location
      function getLocation() {
          if (navigator.geolocation) {
@@ -24,29 +49,12 @@
              center: new google.maps.LatLng(latitude, longitude),
              zoom: 8,
              mapTypeId: google.maps.MapTypeId.ROADMAP
-         }
+         };
          map = new google.maps.Map(mapCanvas, mapOptions);
-         <% myArray = smells.map do |smell| %>
-         <% [smell.lat, smell.lng, smell.id] %>
-         <% end %>
-         var locations = <%= myArray %>;
-         // locations = [[0.00000, 0.00000, 1], [0.00000, 0.00000, 2]]
+         var smells = <%= @smells_json.html_safe %>;
          var marker, i;
-         for (i = 0; i < locations.length; i++) {
-             marker = new google.maps.Marker({
-                 position: new google.maps.LatLng(locations[i][0], locations[i][1]),
-                 map: map,
-                 smell_id: locations[i][2]
-             });
-             google.maps.event.addListener(marker, 'click', function() {
-                 var smell_id = this.smell_id;
-                 var selector = '[data-smell-id="' + smell_id + '"]';
-                 $('.row').animate({
-                     scrollTop: $(selector).offset().top - $('#left').offset().top + $('#left').scrollTop() - 200
-                 });
-                 $('.panel-primary').toggleClass('panel-primary', 'panel-default');
-                 $(selector + ' .panel').toggleClass('panel-primary', 'panel-default');
-             });
+         for (i = 0; i < smells.length; i++) {
+             addMarker(smells[i]);
          };
          google.maps.event.addListener(map, 'bounds_changed', function() {
              // Get bounds
@@ -63,49 +71,21 @@
          });
      };
 
+     var grey = "<%= asset_path "smell_icon_grey.png" %>";
+     var blue = "<%= asset_path "smell_icon_blue.png" %>";
+
      function addMarker(smell) {
          marker = new google.maps.Marker({
              position: new google.maps.LatLng(smell.lat, smell.lng),
              map: map,
-             smell_id: smell.id
+             smell_id: smell.id,
+             icon: grey
          });
-         google.maps.event.addListener(marker, 'click', function() {
-             var smell_id = this.smell_id;
-             var selector = '[data-smell-id="' + smell_id + '"]';
-             //  $(selector)
-             debugger;
-         });
+         addClickListener(marker);
      }
 
      function addSideBarElement(smell) {
-         var $sideBar = $('<div>', {
-             class: "panel panel-default"
-         });
-
-         var $sideBarElementHeader = $('<div>', {
-             class: "panel-heading"
-         }).append($('<a>',{
-             text: "@" + smell.user.twitter_handle,
-             href:"https://twitter.com/" + smell.user.twitter_handle
-         }));
-         $sideBarElementHeader.append(" reported a smell just now");
-
-         var $sideBarElementBody = $('<div>',{
-             class: 'panel-body'
-         }).text(smell.content);
-
-         $sideBar.append($sideBarElementHeader, $sideBarElementBody);
-
-         var $sideBarWrapper = $('<div>', {
-             class: "smell"
-         });
-
-         $sideBarWrapper.attr("data-lat",smell.lat);
-         $sideBarWrapper.attr("data-lng",smell.lng);
-         $sideBarWrapper.attr("data-smell-id",smell.id);
-         $sideBarWrapper.append($sideBar);
-
-         $('#left').prepend($sideBarWrapper);
+         $('#left').prepend(smell.sidebar);
      }
 
      // Bind resize event to Google Map on window resize
@@ -117,7 +97,7 @@
      getLocation();
 
      // Connect to websocket
-     var dispatcher = new WebSocketRails('www.itsmellshere.com/websocket');
+     var dispatcher = new WebSocketRails('localhost:3000/websocket');
      var channel = dispatcher.subscribe('smells');
      channel.bind('new', function(smell) {
          // Add marker when smell added to database
