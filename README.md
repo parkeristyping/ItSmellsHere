@@ -1,7 +1,5 @@
 # It Smells Here
 
-## Description
-
 [Itsmellshere](http://www.itsmellshere.com) is an app for reporting the location of smells. Here's how it goes down:
 
 1. User tweets at @itsmellshere with location services enabled, or with a literal "Lat:<some latitude>, Lng:<some longitude>" string in their tweet
@@ -16,7 +14,7 @@ When visited, the Rails site plots the recent tweets in the database on a map an
 
 ## Screenshot
 
-![screenshot of itsmellshere map]()
+![screenshot of itsmellshere map](https://raw.githubusercontent.com/ivalentine/ItSmellsHere/master/readme_screenshot/itsmellshere%20screenshot.png)
 
 ## Authors
 
