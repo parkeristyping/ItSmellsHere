@@ -1,39 +1,26 @@
-# Itsmellshere
+# It Smells Here
 
 ## Description
 
-Add a short description of your app.
+[Itsmellshere](http://www.itsmellshere.com) is an app for reporting the location of smells. Here's how it goes down:
 
-## Screenshots
+1. User tweets at @itsmellshere with location services enabled, or with a literal "Lat:<some latitude>, Lng:<some longitude>" string in their tweet
 
-Add some spiffy screenshots of your app here.
+2. That tweet is added to our database of smells and plotted on the map at [itsmellshere.com](http://www.itsmellshere.com)
 
-## Background
+3. On [itsmellshere.com](http://www.itsmellshere.com), users can browse tweet content and locations
 
-Why did you want to make this app? What was your development process
-like?
+The site works using a Ruby Twitter bot (<a href="https://github.com/parkeristyping/smellbot"> source code</a>) that establishes a streaming connection with the Twitter API and posts to a Rails-powered site when it receives mentions in tweets with location data, which subsequently adds the tweets to a database.</p>
 
-## Features
+When visited, the Rails site plots the recent tweets in the database on a map and posts any new smells in real-time using the <a href="https://github.com/websocket-rails/websocket-rails">WebSocket-Rails</a> gem. The map is created with the Google Maps JavaScript API and incorporates some dynamic display features, such as highlighting tweets and points on the map when clicked and only displaying the text of tweets currently in the map bounds.
 
-Bullet point some of the key features of your app here.
+## Screenshot
 
-## Usage
+![screenshot of itsmellshere map]()
 
-How do users use your app?
+## Authors
 
-## Development/Contribution
-
-Explain how people can contribute to your app. How should they write tests?
-Any things in particular you'd like to see in pull requests?
-
-## Future
-
-What features are you currently working on? Only mention things that you
-actually are implementing. No pie-in-the-sky-never-gonna-happen stuff.
-
-## Author
-
-Link to your blog, twitter, etc!
+It Smells Here was developed at The Flatiron School by Parker Lawrence, Evan Schrager, and Ian Valentine.
 
 ## License
 
