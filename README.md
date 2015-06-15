@@ -2,7 +2,7 @@
 
 [Itsmellshere](http://www.itsmellshere.com) is an app for reporting the location of smells. Here's how it goes down:
 
-1. User tweets at @itsmellshere with location services enabled, or with a literal "Lat:<some latitude>, Lng:<some longitude>" string in their tweet
+1. User tweets at [@itsmellshere](https://twitter.com/itsmellshere) with location services enabled, or with a literal "Lat:<some latitude>, Lng:<some longitude>" string in their tweet
 
 2. That tweet is added to our database of smells and plotted on the map at [itsmellshere.com](http://www.itsmellshere.com)
 
