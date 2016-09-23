@@ -1,123 +1,124 @@
 <script>
  // Load on page ready...
  $(document).ready(function(){
-     var map;
-     var addClickListener = addClickListenerConstructor();
-     var addMarker = addMarkerConstructor();
+   var map;
+   var addClickListener = addClickListenerConstructor();
+   var addMarker = addMarkerConstructor();
 
-     function addClickListenerConstructor() {
-         var activeMarker;
-         return function(marker){
-             google.maps.event.addListener(marker, 'click', function() {
-                 // First, deselect last element selected
-                 $('.panel-primary').toggleClass('panel-primary', 'panel-default');
-                 if (activeMarker) {
-                     activeMarker.setIcon(grey);
-                 };
-
-                 // Then, update this marker
-                 var smell_id = this.smell_id;
-                 var selector = '[data-smell-id="' + smell_id + '"]';
-                 $('.row').animate({
-                     scrollTop: $(selector).offset().top - $('#left').offset().top + $('#left').scrollTop() - 200
-                 });
-                 $(selector + ' .panel').toggleClass('panel-primary', 'panel-default');
-                 this.setIcon(blue);
-                 activeMarker = this;
-             });
+   function addClickListenerConstructor() {
+     var activeMarker;
+     return function(marker){
+       google.maps.event.addListener(marker, 'click', function() {
+         // First, deselect last element selected
+         $('.panel-primary').toggleClass('panel-primary', 'panel-default');
+         if (activeMarker) {
+           activeMarker.setIcon(grey);
          };
-     }
 
-     function addMarkerConstructor() {
-         var markerArray = [];
-         return function(smell) {
-             marker = new google.maps.Marker({
-                 position: new google.maps.LatLng(smell.lat, smell.lng),
-                 map: map,
-                 smell_id: smell.id,
-                 icon: grey
-             });
-             addClickListener(marker);
-             markerArray.push(marker);
-             var smell_sidebar_id = '.smell[data-smell-id=' + smell.id + '] .panel-heading';
-             $(smell_sidebar_id).click(function(){
-                 for (var i = 0; i < markerArray.length; i++) {
-                     if (markerArray[i].smell_id === this * 1) {
-                         new google.maps.event.trigger( markerArray[i], 'click' );
-                     }
-                 }
-             }.bind(smell.id));
-         };
-     }
-
-     // define function to get user location
-     function getLocation() {
-         if (navigator.geolocation) {
-             navigator.geolocation.getCurrentPosition(parsePosition);
-         }
-         // TODO: Add fall-back if user doesn't give location
-     }
-
-     // define callback for getCurrentPosition function of getLocation()
-     function parsePosition(position) {
-         var latitude = position.coords.latitude;
-         var longitude = position.coords.longitude;
-         insertMap(latitude, longitude);
-     }
-
-     // Define a function that inserts a map in 'map_canvas' at the user's location
-     function insertMap(latitude, longitude) {
-         var mapCanvas = document.getElementById('map-canvas');
-         var mapOptions = {
-             center: new google.maps.LatLng(latitude, longitude),
-             zoom: 8,
-             mapTypeId: google.maps.MapTypeId.ROADMAP
-         };
-         map = new google.maps.Map(mapCanvas, mapOptions);
-         var smells = <%= @smells_json.html_safe %>;
-         var marker, i;
-         for (i = 0; i < smells.length; i++) {
-             addMarker(smells[i]);
-         };
-         google.maps.event.addListener(map, 'bounds_changed', function() {
-             // Get bounds
-             var bounds = this.getBounds();
-             // Add/remove elements as necessary
-             $('.smell').each(function(){
-                 var smellLatLng = new google.maps.LatLng(this.getAttribute('data-lat'), this.getAttribute('data-lng'));
-                 if (bounds.contains(smellLatLng)) {
-                     $(this).show();
-                 } else {
-                     $(this).hide();
-                 };
-             });
+         // Then, update this marker
+         var smell_id = this.smell_id;
+         var selector = '[data-smell-id="' + smell_id + '"]';
+         $('.row').animate({
+           scrollTop: $(selector).offset().top - $('#left').offset().top + $('#left').scrollTop() - 200
          });
+         $(selector + ' .panel').toggleClass('panel-primary', 'panel-default');
+         this.setIcon(blue);
+         activeMarker = this;
+       });
      };
+   }
 
-     var grey = "<%= asset_path "smell_icon_grey.png" %>";
-     var blue = "<%= asset_path "smell_icon_blue.png" %>";
+   function addMarkerConstructor() {
+     var markerArray = [];
+     return function(smell) {
+       marker = new google.maps.Marker({
+         position: new google.maps.LatLng(smell.lat, smell.lng),
+         map: map,
+         smell_id: smell.id,
+         icon: grey
+       });
+       addClickListener(marker);
+       markerArray.push(marker);
+       var smell_sidebar_id = '.smell[data-smell-id=' + smell.id + '] .panel-heading';
+       $(smell_sidebar_id).click(function(){
+         for (var i = 0; i < markerArray.length; i++) {
+           if (markerArray[i].smell_id === this * 1) {
+             new google.maps.event.trigger( markerArray[i], 'click' );
+           }
+         }
+       }.bind(smell.id));
+     };
+   }
 
-     function addSideBarElement(smell) {
-         $('#left').prepend(smell.sidebar);
+   // define function to get user location
+   function getLocation() {
+     if (navigator.geolocation) {
+       debugger;
+       navigator.geolocation.getCurrentPosition(parsePosition);
      }
+     // TODO: Add fall-back if user doesn't give location
+   }
 
-     // Bind resize event to Google Map on window resize
-     $(window).resize(function() {
-         google.maps.event.trigger(map, "resize");
+   // define callback for getCurrentPosition function of getLocation()
+   function parsePosition(position) {
+     var latitude = position.coords.latitude;
+     var longitude = position.coords.longitude;
+     insertMap(latitude, longitude);
+   }
+
+   // Define a function that inserts a map in 'map_canvas' at the user's location
+   function insertMap(latitude, longitude) {
+     var mapCanvas = document.getElementById('map-canvas');
+     var mapOptions = {
+       center: new google.maps.LatLng(latitude, longitude),
+       zoom: 8,
+       mapTypeId: google.maps.MapTypeId.ROADMAP
+     };
+     map = new google.maps.Map(mapCanvas, mapOptions);
+     var smells = <%= @smells_json.html_safe %>;
+     var marker, i;
+     for (i = 0; i < smells.length; i++) {
+       addMarker(smells[i]);
+     };
+     google.maps.event.addListener(map, 'bounds_changed', function() {
+       // Get bounds
+       var bounds = this.getBounds();
+       // Add/remove elements as necessary
+       $('.smell').each(function(){
+         var smellLatLng = new google.maps.LatLng(this.getAttribute('data-lat'), this.getAttribute('data-lng'));
+         if (bounds.contains(smellLatLng)) {
+           $(this).show();
+         } else {
+           $(this).hide();
+         };
+       });
      });
+   };
 
-     // Initialize map
-     getLocation();
+   var grey = "<%= asset_path "smell_icon_grey.png" %>";
+   var blue = "<%= asset_path "smell_icon_blue.png" %>";
 
-     // Connect to websocket
-     var dispatcher = new WebSocketRails('www.itsmellshere.com/websocket');
-     var channel = dispatcher.subscribe('smells');
-     channel.bind('new', function(smell) {
-         // Add marker when smell added to database
-         addMarker(smell);
-         // Add sideBarElement
-         addSideBarElement(smell);
-     });
+   function addSideBarElement(smell) {
+     $('#left').prepend(smell.sidebar);
+   }
+
+   // Bind resize event to Google Map on window resize
+   $(window).resize(function() {
+     google.maps.event.trigger(map, "resize");
+   });
+
+   // Initialize map
+   getLocation();
+
+   // Connect to websocket
+   var dispatcher = new WebSocketRails('www.itsmellshere.com/websocket');
+   var channel = dispatcher.subscribe('smells');
+   channel.bind('new', function(smell) {
+     // Add marker when smell added to database
+     addMarker(smell);
+     // Add sideBarElement
+     addSideBarElement(smell);
+   });
 
  });
 </script>
